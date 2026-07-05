@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Damini Rathore — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#eef1f8;
+    --bg-panel:#ffffff;
+    --bg-elevated:#f5f7fd;
+    --border:#dbdfef;
+    --text:#454b63;
+    --text-dim:#7a8099;
+    --text-bright:#20223a;
+    --teal:#12897a;
+    --teal-soft:rgba(18,137,122,.1);
+    --amber:#b3720f;
+    --amber-soft:rgba(179,114,15,.1);
+    --pink:#b8386a;
+    --mono:'JetBrains Mono',monospace;
+    --sans:'Inter',sans-serif;
+    --radius:10px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.6;
+    position:relative;
+  }
+
+  /* ---------- layered background ---------- */
+  .bg-mesh{
+    position:fixed;inset:0;z-index:-3;pointer-events:none;
+    background:
+      radial-gradient(40% 38% at 12% 18%, rgba(18,137,122,.20), transparent 60%),
+      radial-gradient(44% 42% at 88% 12%, rgba(184,56,106,.16), transparent 60%),
+      radial-gradient(48% 46% at 78% 88%, rgba(179,114,15,.15), transparent 60%),
+      radial-gradient(42% 40% at 8% 92%, rgba(90,99,214,.14), transparent 60%),
+      var(--bg);
+    background-repeat:no-repeat;
+    background-size:150% 150%;
+    animation:meshDrift 26s ease-in-out infinite alternate;
+  }
+  @keyframes meshDrift{
+    0%{background-position:0% 0%,100% 0%,100% 100%,0% 100%,0 0}
+    100%{background-position:8% 6%,92% 8%,90% 92%,6% 90%,0 0}
+  }
+  .bg-grid{
+    position:fixed;inset:0;z-index:-2;pointer-events:none;opacity:.55;
+    background-image:radial-gradient(rgba(69,75,99,.22) 1px, transparent 1.2px);
+    background-size:28px 28px;
+    -webkit-mask-image:radial-gradient(ellipse 75% 70% at 50% 24%, #000 30%, transparent 100%);
+    mask-image:radial-gradient(ellipse 75% 70% at 50% 24%, #000 30%, transparent 100%);
+  }
+  .bg-noise{
+    position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.035;mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  @media (prefers-reduced-motion:reduce){
+    .bg-mesh{animation:none}
+  }
+  a{color:inherit}
+  ::selection{background:var(--teal);color:#fff}
+  :focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:4px}
+
+  /* ---------- editor-tab nav ---------- */
+  .tabbar{
+    position:sticky;top:0;z-index:50;
+    display:flex;align-items:stretch;
+    background:rgba(255,255,255,.82);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+    overflow-x:auto;
+    scrollbar-width:none;
+    box-shadow:0 1px 0 rgba(20,25,50,.03);
+  }
+  .tabbar::-webkit-scrollbar{display:none}
+  .tabbar .brand{
+    display:flex;align-items:center;gap:8px;
+    padding:0 18px;font-family:var(--mono);font-weight:700;color:var(--text-bright);
+    white-space:nowrap;border-right:1px solid var(--border);font-size:14px;
+  }
+  .brand .dot{width:9px;height:9px;border-radius:50%;background:var(--pink)}
+  .tabs{display:flex;list-style:none}
+  .tabs a{
+    display:flex;align-items:center;gap:8px;
+    padding:14px 16px;white-space:nowrap;
+    font-family:var(--mono);font-size:13px;color:var(--text-dim);
+    text-decoration:none;border-right:1px solid var(--border);
+    transition:color .15s,background .15s;
+    position:relative;
+  }
+  .tabs a:hover{color:var(--text-bright);background:var(--bg-elevated)}
+  .tabs a::after{
+    content:'';position:absolute;left:0;right:0;bottom:0;height:2px;
+    background:var(--teal);transform:scaleX(0);transition:transform .2s;
+  }
+  .tabs a:hover::after,.tabs a.active::after{transform:scaleX(1)}
+  .tabs a .ext{color:var(--text-dim);opacity:.6;font-size:11px}
+
+  section{padding:80px 8%;max-width:1200px;margin:0 auto}
+  .comment{font-family:var(--mono);color:var(--text-dim);font-size:14px;margin-bottom:6px}
+  .comment .slash{color:var(--pink)}
+  h2.title{
+    font-family:var(--mono);font-size:clamp(22px,3vw,30px);color:var(--text-bright);
+    margin-bottom:36px;font-weight:600;
+  }
+
+  /* ---------- hero / terminal ---------- */
+  .hero{min-height:86vh;display:flex;align-items:center;gap:48px;flex-wrap:wrap;padding-top:60px}
+  .hero-copy{flex:1 1 380px;min-width:280px;display:flex;gap:26px;align-items:center}
+
+  .avatar{
+    position:relative;flex:0 0 auto;width:128px;height:128px;border-radius:26px;
+    padding:4px;background:linear-gradient(135deg,var(--teal),var(--pink));
+  }
+  .avatar-inner{
+    width:100%;height:100%;border-radius:22px;overflow:hidden;background:var(--bg-elevated);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .avatar-inner img{width:100%;height:100%;object-fit:cover;display:block}
+  .avatar-fallback{
+    display:none;width:100%;height:100%;align-items:center;justify-content:center;
+    font-family:var(--mono);font-weight:700;font-size:34px;color:var(--teal);
+  }
+
+  .hero-text h1{
+    font-family:var(--mono);font-size:clamp(28px,4.4vw,46px);color:var(--text-bright);
+    line-height:1.15;margin-bottom:8px;font-weight:700;
+  }
+  .hero-text h1 span{color:var(--teal)}
+  .eyebrow{font-family:var(--mono);color:var(--teal);font-size:13px;letter-spacing:.04em;margin-bottom:10px}
+  .hero .role{font-size:16px;color:var(--text-dim);margin-bottom:22px}
+  .cta-row{display:flex;gap:12px;flex-wrap:wrap}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:var(--mono);font-size:13px;color:var(--text-bright);
+    background:var(--bg-panel);border:1px solid var(--border);
+    padding:11px 18px;border-radius:8px;text-decoration:none;
+    transition:transform .15s,border-color .15s,background .15s;
+    box-shadow:0 1px 2px rgba(20,25,50,.04);
+  }
+  .btn:hover{transform:translateY(-2px);border-color:var(--teal);background:var(--bg-elevated)}
+  .btn.primary{background:var(--teal);color:#fff;border-color:var(--teal);font-weight:600}
+  .btn.primary:hover{background:#0f6f63}
+  .btn::before{content:'▸';color:var(--amber);font-size:11px}
+  .btn.primary::before{color:#fff}
+
+  .hero-copy-wrap{width:100%;display:flex;flex-direction:column;gap:0}
+
+  .terminal{
+    flex:1 1 380px;min-width:300px;max-width:480px;
+    background:#161822;border:1px solid #262838;border-radius:12px;
+    box-shadow:0 20px 50px rgba(20,25,50,.18);overflow:hidden;
+  }
+  .term-head{display:flex;gap:7px;padding:12px 14px;background:#0f101a;border-bottom:1px solid #262838}
+  .term-head span{width:11px;height:11px;border-radius:50%}
+  .term-head span:nth-child(1){background:#e0779b}
+  .term-head span:nth-child(2){background:#f5c26b}
+  .term-head span:nth-child(3){background:#7dd3c0}
+  .term-body{padding:20px;font-family:var(--mono);font-size:13.5px;min-height:190px;color:#c8ccd4}
+  .term-body .line{margin-bottom:10px}
+  .term-body .prompt{color:#7dd3c0}
+  .term-body .out{color:#8a90ab;padding-left:18px}
+  .term-body .cursor{display:inline-block;width:8px;height:15px;background:#7dd3c0;margin-left:2px;vertical-align:middle;animation:blink 1s step-end infinite}
+  @keyframes blink{50%{opacity:0}}
+
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
+  .reveal.in{opacity:1;transform:translateY(0)}
+
+  /* ---------- about ---------- */
+  .about-panel{
+    background:var(--bg-panel);border:1px solid var(--border);border-radius:var(--radius);
+    padding:28px 30px;font-size:15.5px;color:var(--text);
+    box-shadow:0 1px 3px rgba(20,25,50,.04);
+  }
+  .about-panel p+p{margin-top:14px}
+  .about-panel .kw{color:var(--pink)}
+  .about-panel .fn{color:var(--teal)}
+
+  /* ---------- education timeline ---------- */
+  .timeline{position:relative;padding-left:28px}
+  .timeline::before{content:'';position:absolute;left:6px;top:6px;bottom:6px;width:2px;background:linear-gradient(var(--teal),var(--border))}
+  .tl-item{position:relative;margin-bottom:34px}
+  .tl-item:last-child{margin-bottom:0}
+  .tl-item::before{content:'';position:absolute;left:-28px;top:6px;width:13px;height:13px;border-radius:50%;background:var(--bg-panel);border:2px solid var(--teal)}
+  .tl-card{background:var(--bg-panel);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;box-shadow:0 1px 3px rgba(20,25,50,.04)}
+  .tl-date{display:inline-block;font-family:var(--mono);font-size:12px;color:var(--amber);background:var(--amber-soft);border:1px solid rgba(179,114,15,.3);padding:3px 10px;border-radius:20px;margin-bottom:10px}
+  .tl-card h3{font-size:16.5px;color:var(--text-bright);margin-bottom:4px}
+  .tl-card .org{color:var(--text-dim);font-size:14px}
+  .tl-card .score{font-family:var(--mono);color:var(--teal);font-size:13.5px;margin-top:8px}
+
+  /* ---------- skills ---------- */
+  .skill-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px}
+  .skill-chip{
+    background:var(--bg-panel);border:1px solid var(--border);border-radius:8px;
+    padding:14px 16px;font-family:var(--mono);font-size:14px;color:var(--text-bright);
+    display:flex;align-items:center;gap:10px;transition:border-color .15s,transform .15s;
+    box-shadow:0 1px 3px rgba(20,25,50,.04);
+  }
+  .skill-chip:hover{border-color:var(--teal);transform:translateY(-3px)}
+  .skill-chip .bar{flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+  .skill-chip .bar i{display:block;height:100%;background:var(--teal);border-radius:2px}
+
+  /* ---------- projects ---------- */
+  h3.group{font-family:var(--mono);color:var(--text-dim);font-size:14px;margin:34px 0 16px;letter-spacing:.03em}
+  h3.group:first-of-type{margin-top:0}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+  .proj-card{
+    background:var(--bg-panel);border:1px solid var(--border);border-radius:var(--radius);
+    padding:22px;display:flex;flex-direction:column;gap:12px;
+    transition:border-color .15s,transform .15s;box-shadow:0 1px 3px rgba(20,25,50,.04);
+  }
+  .proj-card:hover{border-color:var(--teal);transform:translateY(-4px)}
+  .proj-card h4{color:var(--text-bright);font-size:16.5px}
+  .proj-card p.desc{color:var(--text-dim);font-size:13.5px}
+  .card-actions{margin-top:auto;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+  .proj-link{
+    display:inline-flex;align-items:center;gap:6px;
+    font-family:var(--mono);font-size:13px;color:var(--teal);text-decoration:none;
+  }
+  .proj-link::after{content:'↗';transition:transform .15s;font-size:11px}
+  .proj-link:hover::after{transform:translate(2px,-2px)}
+  .preview-btn{
+    display:inline-flex;align-items:center;gap:6px;
+    font-family:var(--mono);font-size:13px;color:var(--pink);
+    background:transparent;border:1px dashed rgba(184,56,106,.4);
+    padding:6px 12px;border-radius:20px;cursor:pointer;
+    transition:background .15s,border-color .15s;
+  }
+  .preview-btn:hover{background:rgba(184,56,106,.08);border-color:var(--pink)}
+  .preview-btn::before{content:'▶';font-size:9px}
+
+  /* generic simple cards (profiles/contact) */
+  .simple-card{
+    background:var(--bg-panel);border:1px solid var(--border);border-radius:var(--radius);
+    padding:20px 22px;display:flex;justify-content:space-between;align-items:center;
+    text-decoration:none;transition:border-color .15s,transform .15s;
+    box-shadow:0 1px 3px rgba(20,25,50,.04);
+  }
+  .simple-card:hover{border-color:var(--teal);transform:translateY(-3px)}
+  .simple-card .name{color:var(--text-bright);font-size:15px}
+  .simple-card .go{font-family:var(--mono);color:var(--teal);font-size:13px}
+
+  .contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+
+  /* ---------- certificate cards (visible thumbnails) ---------- */
+  .cert-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:22px}
+  .cert-card{
+    background:var(--bg-panel);border:1px solid var(--border);border-radius:var(--radius);
+    overflow:hidden;display:flex;flex-direction:column;
+    transition:border-color .15s,transform .15s;box-shadow:0 1px 3px rgba(20,25,50,.04);
+  }
+  .cert-card:hover{border-color:var(--teal);transform:translateY(-4px)}
+  .cert-thumb{
+    position:relative;width:100%;aspect-ratio:4/3;background:var(--bg-elevated);
+    overflow:hidden;border-bottom:1px solid var(--border);cursor:pointer;
+  }
+  .cert-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}
+  .cert-card:hover .cert-thumb img{transform:scale(1.04)}
+  .cert-thumb-fallback{
+    position:absolute;inset:0;display:flex;flex-direction:column;gap:8px;
+    align-items:center;justify-content:center;color:var(--text-dim);
+    font-family:var(--mono);font-size:12.5px;text-align:center;padding:16px;
+  }
+  .cert-thumb-fallback .icon{font-size:26px}
+  .cert-body{padding:16px 18px;display:flex;flex-direction:column;gap:6px}
+  .cert-body h4{color:var(--text-bright);font-size:15.5px}
+  .cert-body .issuer{color:var(--text-dim);font-size:13px;font-family:var(--mono)}
+  .cert-actions{margin-top:10px;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+
+  /* ---------- hackathon cards (visible thumbnails) ---------- */
+  .hack-card{
+    background:var(--bg-panel);border:1px solid var(--border);border-radius:var(--radius);
+    overflow:hidden;display:flex;flex-direction:column;padding:0!important;
+    transition:border-color .15s,transform .15s;box-shadow:0 1px 3px rgba(20,25,50,.04);
+  }
+  .hack-card:hover{border-color:var(--teal);transform:translateY(-4px)}
+  .hack-thumb{
+    position:relative;width:100%;aspect-ratio:16/9;background:var(--bg-elevated);
+    overflow:hidden;border-bottom:1px solid var(--border);cursor:pointer;
+  }
+  .hack-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}
+  .hack-card:hover .hack-thumb img{transform:scale(1.04)}
+  .hack-body{padding:18px 20px;display:flex;flex-direction:column;gap:8px;flex:1}
+  .hack-body h4{color:var(--text-bright);font-size:16.5px}
+  .hack-body p.desc{color:var(--text-dim);font-size:13.5px}
+
+  footer{text-align:center;padding:28px 8%;color:var(--text-dim);font-family:var(--mono);font-size:12.5px;border-top:1px solid var(--border)}
+
+  /* ---------- live preview modal ---------- */
+  .modal-overlay{
+    position:fixed;inset:0;background:rgba(20,22,35,.55);backdrop-filter:blur(2px);
+    display:flex;align-items:center;justify-content:center;padding:24px;
+    z-index:200;opacity:0;pointer-events:none;transition:opacity .2s;
+  }
+  .modal-overlay.open{opacity:1;pointer-events:auto}
+  .modal-box{
+    width:min(920px,100%);height:min(640px,86vh);background:var(--bg-panel);
+    border-radius:14px;overflow:hidden;display:flex;flex-direction:column;
+    box-shadow:0 30px 80px rgba(10,12,25,.4);transform:translateY(10px);transition:transform .2s;
+  }
+  .modal-overlay.open .modal-box{transform:translateY(0)}
+  .modal-head{
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    padding:12px 16px;border-bottom:1px solid var(--border);background:var(--bg-elevated);
+  }
+  .modal-url{font-family:var(--mono);font-size:12.5px;color:var(--text-dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .modal-actions{display:flex;gap:10px;align-items:center;flex:0 0 auto}
+  .modal-open{font-family:var(--mono);font-size:12.5px;color:var(--teal);text-decoration:none}
+  .modal-close{
+    font-family:var(--mono);background:none;border:none;color:var(--text-dim);
+    font-size:16px;cursor:pointer;line-height:1;padding:4px 8px;border-radius:6px;
+  }
+  .modal-close:hover{color:var(--pink);background:rgba(184,56,106,.08)}
+  .modal-box iframe{flex:1;width:100%;border:none;background:#fff}
+  .modal-empty{
+    flex:1;display:flex;align-items:center;justify-content:center;text-align:center;
+    padding:40px;color:var(--text-dim);font-size:14px;
+  }
+
+  @media (max-width:640px){
+    section{padding:56px 6%}
+    .hero{min-height:auto;padding-top:32px}
+    .hero-copy{flex-direction:column;align-items:flex-start;gap:18px}
+  }
+</style>
+</head>
+<body>
+<div class="bg-mesh" aria-hidden="true"></div>
+<div class="bg-grid" aria-hidden="true"></div>
+<div class="bg-noise" aria-hidden="true"></div>
+
+<nav class="tabbar">
+  <div class="brand"><span class="dot"></span>damini.dev</div>
+  <ul class="tabs">
+    <li><a href="#home">home<span class="ext">.js</span></a></li>
+    <li><a href="#about">about<span class="ext">.md</span></a></li>
+    <li><a href="#education">education<span class="ext">.json</span></a></li>
+    <li><a href="#skills">skills<span class="ext">.yml</span></a></li>
+    <li><a href="#projects">projects<span class="ext">/</span></a></li>
+    <li><a href="#hackathons">hackathons<span class="ext">.log</span></a></li>
+    <li><a href="#certifications">certs<span class="ext">.zip</span></a></li>
+    <li><a href="#profiles">profiles<span class="ext">.txt</span></a></li>
+    <li><a href="#contact">contact<span class="ext">.sh</span></a></li>
+  </ul>
+</nav>
+
+<!-- ================= HOME ================= -->
+<section id="home" class="hero">
+  <div class="hero-copy-wrap">
+    <div class="hero-copy">
+      <div class="avatar">
+        <div class="avatar-inner">
+          <!-- EDIT: put your photo at this path, e.g. images/profile.jpg -->
+          <img src="/*images/profile.jpeg*\" alt="Damini Rathore"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <div class="avatar-fallback">DR</div>
+        </div>
+      </div>
+      <div class="hero-text">
+        <div class="eyebrow">$ whoami</div>
+        <h1>Damini <span>Rathore</span></h1>
+        <div class="role">Software Developer · AI Enthusiast · B.Tech IT '26 @ IGDTUW</div>
+      </div>
+    </div>
+    <div class="cta-row" style="margin-top:24px">
+      <!-- EDIT: point this at your actual resume file -->
+      <a class="btn primary" href="resume.pdf" target="_blank" rel="noopener">Resume</a>
+      <a class="btn" href="https://github.com/damini022" target="_blank" rel="noopener">GitHub</a>
+      <a class="btn" href="https://www.linkedin.com/in/damini-rathore-640832346" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </div>
+
+  <div class="terminal">
+    <div class="term-head"><span></span><span></span><span></span></div>
+    <div class="term-body" id="termBody">
+      <noscript>
+        <div class="line"><span class="prompt">$</span> cat role.txt</div>
+        <div class="out">Software Developer | AI Enthusiast</div>
+        <div class="line"><span class="prompt">$</span> cat focus.txt</div>
+        <div class="out">Web Dev · AI · DSA</div>
+      </noscript>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ABOUT ================= -->
+<section id="about">
+  <div class="comment"><span class="slash">//</span> About</div>
+  <h2 class="title">about.md</h2>
+  <div class="about-panel reveal">
+    <p>Hi! I'm <span class="fn">Damini Rathore</span>, a B.Tech Information Technology student at IGDTUW with a passion for <span class="kw">Software Development</span>, <span class="kw">Artificial Intelligence</span>, and <span class="kw">Full-Stack Web Development</span>.</p>
+    <p>I enjoy solving real-world problems by building scalable and user-friendly applications. My interests include Data Structures &amp; Algorithms, modern web technologies, and AI-powered solutions. I'm continuously learning new technologies and looking for Software Development Engineer opportunities where I can contribute, grow, and build impactful products.</p>
+  </div>
+</section>
+
+<!-- ================= EDUCATION ================= -->
+<section id="education">
+  <div class="comment"><span class="slash">//</span> Education</div>
+  <h2 class="title">education.json</h2>
+  <div class="timeline">
+    <div class="tl-item reveal">
+      <div class="tl-card">
+        <!-- EDIT: replace with your actual start–end dates -->
+        <span class="tl-date">2022 — 2026</span>
+        <h3>Bachelor of Technology in Information Technology</h3>
+        <div class="org">Indira Gandhi Delhi Technical University for Women</div>
+        <div class="score">CGPA: 8.05</div>
+      </div>
+    </div>
+    <div class="tl-item reveal">
+      <div class="tl-card">
+        <!-- EDIT: replace with your actual year -->
+        <span class="tl-date">2020 - 2021</span>
+        <h3>Class XII</h3>
+        <div class="org">Government Co-Ed Senior Secondary School , Delhi</div>
+        <div class="score">Percentage: 90%</div>
+      </div>
+    </div>
+     <div class="tl-item reveal">
+      <div class="tl-card">
+        <!-- EDIT: replace with your actual year -->
+        <span class="tl-date">2018 — 2019</span>
+        <h3>Class X</h3>
+        <div class="org">Mata Heera Devi Chaudhary Saraswati Bal Mandir, Delhi</div>
+        <div class="score">Percentage: 85.4%</div>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+
+  </div>
+</section>
+
+<!-- ================= SKILLS ================= -->
+
+
+<!-- ================= SKILLS ================= -->
+<section id="skills">
+  <div class="comment"><span class="slash">//</span> Skills</div>
+  <h2 class="title">skills.yml</h2>
+  <div class="skill-grid">
+    <div class="skill-chip reveal">C++<div class="bar"><i style="width:85%"></i></div></div>
+    <div class="skill-chip reveal">Python<div class="bar"><i style="width:80%"></i></div></div>
+    <div class="skill-chip reveal">HTML/CSS<div class="bar"><i style="width:90%"></i></div></div>
+    <div class="skill-chip reveal">JavaScript<div class="bar"><i style="width:75%"></i></div></div>
+    <div class="skill-chip reveal">React<div class="bar"><i style="width:70%"></i></div></div>
+    <div class="skill-chip reveal">SQL<div class="bar"><i style="width:75%"></i></div></div>
+  </div>
+</section>
+
+<!-- ================= PROJECTS ================= -->
+<section id="projects">
+  <div class="comment"><span class="slash">//</span> Projects</div>
+  <h2 class="title">projects/</h2>
+
+  <h3 class="group">major/</h3>
+  <div class="cards">
+    <!-- EDIT: set href to your deployed project URL (or GitHub repo) to enable link + live preview -->
+    <div class="proj-card reveal" data-name="StudyGen AI">
+      <h4>StudyGen AI</h4>
+      <p class="desc">An AI-powered Study Assistant built using Python, Streamlit, and Google Gemini AI that helps students study smarter from PDFs.</p>
+      <div class="card-actions">
+        <a class="proj-link" href="https://github.com/damini022/StudyGenie-AI" target="_blank" rel="noopener">View project</a>
+      </div>
+    </div>
+    <div class="proj-card reveal" data-name="Dream Mind AI">
+      <h4>Dream Mind AI</h4>
+      <p class="desc">DreamMind AI is an AI-powered web application that analyzes dreams and generates meaningful interpretations using Google's Gemini AI model.</p>
+      <div class="card-actions">
+        <a class="proj-link" href="https://github.com/damini022/Dream" target="_blank" rel="noopener">View project</a>
+      </div>
+    </div>
+
+
+
+ <div class="proj-card reveal" data-name="Mini E- commerce store">
+      <h4>Mini E- commerce store</h4>
+      <p class="desc">A mini e-commerce application built using React that fetches product data from a public API and allows users to browse products and manage a cart.</p>
+      <div class="card-actions">
+        <a class="proj-link" href="https://mini-e-commerce-react-app-s3od.vercel.app/" target="_blank" rel="noopener">View project</a>
+      </div>
+    </div>
+
+
+
+
+
+  </div>
+
+  <h3 class="group">minor/</h3>
+  <div class="cards">
+    <div class="proj-card reveal" data-name="Sorting algorithm Visualizer">
+      <h4>Sorting Algorithm Visualizer</h4>
+      <p class="desc">This is a web-based Sorting Algorithm Visualizer built using HTML, CSS, and JavaScript — all in a single file. It allows users to visualize how different sorting algorithms work step by step.</p>
+      <div class="card-actions">
+        <a class="proj-link" href="https://damini022.github.io/sorting-algorithm-visualizer//" target="_blank" rel="noopener">View project</a>
+      </div>
+    </div>
+
+
+
+    <div class="proj-card reveal" data-name="TaskWize- Smart Todo List">
+      <h4>TaskWize- Smart Todo List</h4>
+      <p class="desc">TaskWise is a sleek and responsive to-do list application built using only HTML, CSS, and JavaScript. It features due-date countdowns, filtering, search, priority badges, and category grouping — all stored using localStorage, so no backend or sign-in is required.</p>
+      <div class="card-actions">
+        <a class="proj-link" href="https://damini022.github.io/TaskWize/" target="_blank" rel="noopener">View Project</a>
+      </div>
+    </div>
+
+
+
+      <div class="proj-card reveal" data-name="MyStudentDesk – Student Management System">
+      <h4>MyStudentDesk – Student Management System</h4>
+      <p class="desc">MyStudentDesk is a web-based Student Management System developed using Python, SQLite, and Streamlit.
+The application allows users to manage student records through basic CRUD operations.</p>
+      <div class="card-actions">
+        <a class="proj-link" href="https://mystudentdesk-dwnerhiphf5ctbqh5te9dv.streamlit.app/" target="_blank" rel="noopener">View Project</a>
+      </div>
+    </div>
+
+
+
+
+
+      <div class="proj-card reveal" data-name="Queue Cure - Hospital management system ">
+      <h4>Queue Cure - Hospital management system</h4>
+      <p class="desc">A smart digital queue management system built for clinics and hospitals to reduce patient waiting confusion and improve queue visibility.
+
+</p>
+      <div class="card-actions">
+        <a class="proj-link" href="https://github.com/damini022/Queue-cure-26" target="_blank" rel="noopener">View Project</a>
+      </div>
+
+
+
+
+    </div>
+  </div>
+
+  <h3 class="group">ml-ai/</h3>
+  <div class="cards">
+    <div class="proj-card reveal" data-name="Mental Health Chatbot">
+      <h4>Mental Health Chatbot</h4>
+      <p class="desc">A large-scale Mental Health Support Chatbot built using Machine Learning and Natural Language Processing (NLP). The chatbot classifies user input into multiple mental health–related intents and provides supportive, empathetic responses. It is deployed online using Streamlit Community Cloud.</p>
+      <div class="card-actions">
+        <a class="proj-link" href="https://damini022-mental--health-chatbot-application-yywgss.streamlit.app/" target="_blank" rel="noopener">View project</a>
+      </div>
+    </div>
+    <div class="proj-card reveal" data-name="Disease Prediction">
+      <h4>Disease Prediction</h4>
+      <p class="desc">Add a one or two line description of what this project does.</p>
+      <div class="card-actions">
+        <a class="proj-link" href="#" target="_blank" rel="noopener">View project</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= HACKATHONS ================= -->
+<section id="hackathons and challenges">
+  <div class="comment"><span class="slash">//</span> Hackathons</div>
+  <h2 class="title">hackathons.log</h2>
+  <div class="cards">
+    <!-- EDIT: put each event photo/banner at these paths (e.g. hackathons/flowzint.jpg),
+         and swap in the real event name, placement, and date -->
+    <div class="proj-card hack-card reveal" data-name="FlowZint AI">
+      <div class="hack-thumb" data-full="hackathons/flowzint.jpg">
+        <img src="hackathons/flowzint.jpg" alt="FlowZint AI hackathon"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="cert-thumb-fallback">
+          <span class="icon">🏆</span>Add flowzint.jpg to the hackathons/ folder
+        </div>
+      </div>
+      <div class="hack-body">
+        <h4>FlowZint AI</h4>
+        <p class="desc">Add event name, placement, or what you built.</p>
+        <div class="card-actions">
+          <a class="proj-link" href="#" target="_blank" rel="noopener">View details</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="proj-card hack-card reveal" data-name="Queue Cure">
+      <div class="hack-thumb" data-full="hackathons/queuecure.jpg">
+        <img src="hackathons/queuecure.jpg" alt="Queue Cure hackathon"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="cert-thumb-fallback">
+          <span class="icon">🏆</span>Add queuecure.jpg to the hackathons/ folder
+        </div>
+      </div>
+      <div class="hack-body">
+        <h4>Queue Cure</h4>
+        <p class="desc">Add event name, placement, or what you built.</p>
+        <div class="card-actions">
+          <a class="proj-link" href="#" target="_blank" rel="noopener">View details</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CERTIFICATIONS ================= -->
+<section id="certifications">
+  <div class="comment"><span class="slash">//</span> Certifications</div>
+  <h2 class="title">certs.zip</h2>
+  <div class="cert-grid">
+    <!-- EDIT: put each certificate image at these paths (e.g. certs/certificate1.jpg),
+         and swap in the real title / issuing platform / year -->
+    <div class="cert-card reveal" data-name="Certificate 1">
+      <div class="cert-thumb" data-full="certs/certificate1.jpg">
+        <img src="certs/certificate1.jpg" alt="Certificate 1"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="cert-thumb-fallback">
+          <span class="icon">📄</span>Add certificate1.jpg to the certs/ folder
+        </div>
+      </div>
+      <div class="cert-body">
+        <h4>Certificate 1</h4>
+        <div class="issuer">Issuing platform · Year</div>
+        <div class="cert-actions">
+          <a class="proj-link" href="certs/certificate1.jpg" target="_blank" rel="noopener">Open full size</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="cert-card reveal" data-name="Certificate 2">
+      <div class="cert-thumb" data-full="certs/certificate2.jpg">
+        <img src="certs/certificate2.jpg" alt="Certificate 2"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="cert-thumb-fallback">
+          <span class="icon">📄</span>Add certificate2.jpg to the certs/ folder
+        </div>
+      </div>
+      <div class="cert-body">
+        <h4>Certificate 2</h4>
+        <div class="issuer">Issuing platform · Year</div>
+        <div class="cert-actions">
+          <a class="proj-link" href="certs/certificate2.jpg" target="_blank" rel="noopener">Open full size</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PROFILES ================= -->
+<section id="profiles">
+  <div class="comment"><span class="slash">//</span> Coding profiles</div>
+  <h2 class="title">profiles.txt</h2>
+  <div class="cards">
+    <a class="simple-card reveal" href="https://github.com/damini022" target="_blank" rel="noopener">
+      <span class="name">GitHub</span><span class="go">visit →</span>
+    </a>
+    <!-- EDIT: add your real LeetCode profile link -->
+    <a class="simple-card reveal" href="#" target="_blank" rel="noopener">
+      <span class="name">LeetCode</span><span class="go">visit →</span>
+    </a>
+    <a class="simple-card reveal" href="https://www.linkedin.com/in/damini-rathore-640832346" target="_blank" rel="noopener">
+      <span class="name">LinkedIn</span><span class="go">visit →</span>
+    </a>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section id="contact">
+  <div class="comment"><span class="slash">//</span> Contact</div>
+  <h2 class="title">contact.sh</h2>
+  <div class="contact-grid">
+    <!-- EDIT: replace with your real email -->
+    <a class="simple-card reveal" href="mailto:your.email@example.com">
+      <span class="name">Email</span><span class="go">send →</span>
+    </a>
+    <a class="simple-card reveal" href="https://github.com/damini022" target="_blank" rel="noopener">
+      <span class="name">GitHub</span><span class="go">visit →</span>
+    </a>
+    <a class="simple-card reveal" href="https://www.linkedin.com/in/damini-rathore-640832346" target="_blank" rel="noopener">
+      <span class="name">LinkedIn</span><span class="go">visit →</span>
+    </a>
+  </div>
+</section>
+
+<footer>© 2026 Damini Rathore — built with HTML, CSS &amp; a bit of JS</footer>
+
+<!-- live preview modal -->
+<div class="modal-overlay" id="previewOverlay">
+  <div class="modal-box" role="dialog" aria-modal="true" aria-label="Project live preview">
+    <div class="modal-head">
+      <span class="modal-url" id="modalUrl"></span>
+      <div class="modal-actions">
+        <a class="modal-open" id="modalOpenLink" target="_blank" rel="noopener">Open in new tab ↗</a>
+        <button class="modal-close" id="modalClose" aria-label="Close preview">✕</button>
+      </div>
+    </div>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<script>
+  // Typing terminal effect in hero
+  (function(){
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var body = document.getElementById('termBody');
+    var lines = [
+      {p:true, text:'whoami'},
+      {p:false, text:'Damini Rathore'},
+      {p:true, text:'cat role.txt'},
+      {p:false, text:'Software Developer | AI Enthusiast'},
+      {p:true, text:'cat focus.txt'},
+      {p:false, text:'Web Development · AI · DSA'},
+      {p:true, text:'echo $STATUS'},
+      {p:false, text:'Open to SDE opportunities'}
+    ];
+    if(reduced){
+      lines.forEach(function(l){
+        var d=document.createElement('div');
+        d.className = l.p ? 'line' : 'out';
+        d.innerHTML = l.p ? '<span class="prompt">$</span> '+l.text : l.text;
+        body.appendChild(d);
+      });
+      return;
+    }
+    var li=0, ci=0, curLineEl=null;
+    function typeNext(){
+      if(li>=lines.length){
+        var cur=document.createElement('span');cur.className='cursor';
+        body.lastChild && body.lastChild.appendChild(cur);
+        return;
+      }
+      var l=lines[li];
+      if(ci===0){
+        curLineEl=document.createElement('div');
+        curLineEl.className=l.p?'line':'out';
+        if(l.p) curLineEl.innerHTML='<span class="prompt">$</span> ';
+        body.appendChild(curLineEl);
+      }
+      if(ci<l.text.length){
+        curLineEl.append(l.text[ci]);
+        ci++;
+        setTimeout(typeNext, l.p?38:14);
+      } else {
+        li++; ci=0;
+        setTimeout(typeNext, 260);
+      }
+    }
+    typeNext();
+  })();
+
+  // Scroll reveal
+  (function(){
+    var els = document.querySelectorAll('.reveal');
+    if(!('IntersectionObserver' in window)){ els.forEach(function(e){e.classList.add('in')}); return; }
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); }
+      });
+    }, {threshold:.15});
+    els.forEach(function(e){io.observe(e)});
+  })();
+
+  // Active tab highlight
+  (function(){
+    var tabs = document.querySelectorAll('.tabs a');
+    var sections = Array.from(tabs).map(function(t){return document.querySelector(t.getAttribute('href'))});
+    window.addEventListener('scroll', function(){
+      var pos = window.scrollY + 100;
+      var idx = 0;
+      sections.forEach(function(s,i){ if(s && s.offsetTop <= pos) idx = i; });
+      tabs.forEach(function(t,i){ t.classList.toggle('active', i===idx); });
+    });
+  })();
+
+  // Inject a "Live preview" button into every project card, wired to its View-project link
+  (function(){
+    document.querySelectorAll('.proj-card').forEach(function(card){
+      var link = card.querySelector('.proj-link');
+      var actions = card.querySelector('.card-actions');
+      if(!link || !actions) return;
+      var url = link.getAttribute('href') || '#';
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'preview-btn';
+      btn.textContent = 'Live preview';
+      btn.setAttribute('data-url', url);
+      btn.setAttribute('data-name', card.getAttribute('data-name') || 'Project');
+      actions.appendChild(btn);
+    });
+  })();
+
+  // Live preview modal logic (handles live URLs, images, and PDFs)
+  (function(){
+    var overlay = document.getElementById('previewOverlay');
+    var content = document.getElementById('modalContent');
+    var urlLabel = document.getElementById('modalUrl');
+    var openLink = document.getElementById('modalOpenLink');
+    var closeBtn = document.getElementById('modalClose');
+
+    function isImage(url){ return /\.(png|jpe?g|gif|webp|svg)$/i.test(url); }
+    function isPdf(url){ return /\.pdf$/i.test(url); }
+
+    function openModal(url, name){
+      var valid = url && url !== '#';
+      urlLabel.textContent = valid ? url : (name + ' — no file added yet');
+      content.innerHTML = '';
+      if(valid){
+        openLink.style.display = '';
+        openLink.href = url;
+        if(isImage(url)){
+          var wrap = document.createElement('div');
+          wrap.style.cssText = 'flex:1;display:flex;align-items:center;justify-content:center;background:#0f101a;overflow:auto;padding:16px';
+          var img = document.createElement('img');
+          img.src = url;
+          img.alt = name;
+          img.style.cssText = 'max-width:100%;max-height:100%;object-fit:contain;border-radius:6px';
+          wrap.appendChild(img);
+          content.appendChild(wrap);
+        } else {
+          var frame = document.createElement('iframe');
+          frame.src = url;
+          frame.title = name + ' live preview';
+          content.appendChild(frame);
+        }
+      } else {
+        openLink.style.display = 'none';
+        var msg = document.createElement('div');
+        msg.className = 'modal-empty';
+        msg.textContent = 'Add a file/link for "' + name + '" to enable this preview.';
+        content.appendChild(msg);
+      }
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal(){
+      overlay.classList.remove('open');
+      document.body.style.overflow = '';
+      setTimeout(function(){ content.innerHTML = ''; }, 200);
+    }
+
+    document.addEventListener('click', function(e){
+      var btn = e.target.closest('.preview-btn');
+      if(btn){ openModal(btn.getAttribute('data-url'), btn.getAttribute('data-name')); return; }
+      var thumb = e.target.closest('.cert-thumb, .hack-thumb');
+      if(thumb){
+        var card = thumb.closest('.cert-card, .hack-card');
+        openModal(thumb.getAttribute('data-full'), card ? card.getAttribute('data-name') : 'Preview');
+      }
+    });
+    closeBtn.addEventListener('click', closeModal);
+    overlay.addEventListener('click', function(e){ if(e.target === overlay) closeModal(); });
+    document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeModal(); });
+  })();
+</script>
+</body>
+</html>
