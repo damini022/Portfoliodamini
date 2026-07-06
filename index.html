@@ -266,7 +266,14 @@
     position:relative;width:100%;aspect-ratio:4/3;background:var(--bg-elevated);
     overflow:hidden;border-bottom:1px solid var(--border);cursor:pointer;
   }
-  .cert-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}
+  .cert-thumb img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    display:block;
+    transition:transform .3s;
+    background:white;
+}
   .cert-card:hover .cert-thumb img{transform:scale(1.04)}
   .cert-thumb-fallback{
     position:absolute;inset:0;display:flex;flex-direction:column;gap:8px;
